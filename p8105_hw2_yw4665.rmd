@@ -1,0 +1,6 @@
+---
+title: "p8105_hw2_yw4665"
+author: "Yishi Wang"
+date: "2025-09-23"
+output: github_document
+---

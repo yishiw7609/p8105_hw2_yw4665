@@ -14,8 +14,21 @@ library(tidyverse)
 ## Problem 1
 Read desired data from the local_files folder and assign them to according variables:
 ```{r}
-pols_month_df = read_csv("local_files/fivethirtyeight_datasets/pols-month.csv")
-unemployment_df = read_csv("local_files/fivethirtyeight_datasets/unemployment.csv")
-snp_df = read_csv("local_files/fivethirtyeight_datasets/snp.csv")
+pols_month_df = read_csv("local_files/fivethirtyeight_datasets/pols-month.csv") |>
+  janitor::clean_names()
+unemployment_df = read_csv("local_files/fivethirtyeight_datasets/unemployment.csv") |>
+  janitor::clean_names()
+snp_df = read_csv("local_files/fivethirtyeight_datasets/snp.csv") |>
+  janitor::clean_names()
+```
+Clean the the pols_month dataset first:
+```{r}
+cleaned_pols_month_df = pols_month_df |> 
+  separate("mon", c("year", "month", "day"), "-") |> 
+  mutate(
+    month = month.name[as.integer(month)],
+    president = if_else(prez_gop == 0, "dem", "gop")
+    ) |>
+  select(-prez_gop, -prez_dem, -day)
 ```
 

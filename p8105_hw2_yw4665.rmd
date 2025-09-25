@@ -21,7 +21,7 @@ unemployment_df = read_csv("local_files/fivethirtyeight_datasets/unemployment.cs
 snp_df = read_csv("local_files/fivethirtyeight_datasets/snp.csv") |>
   janitor::clean_names()
 ```
-Clean the the pols_month dataset first:
+Clean the the pols_month dataframe first and assign the result df to 'cleaned_pols_month_df':
 ```{r}
 cleaned_pols_month_df = pols_month_df |> 
   separate("mon", c("year", "month", "day"), "-") |> 
@@ -31,4 +31,16 @@ cleaned_pols_month_df = pols_month_df |>
     ) |>
   select(-prez_gop, -prez_dem, -day)
 ```
+
+Now clean the snp dataframe with similar procedures:
+```{r}
+cleaned_snp_df = snp_df |>
+  separate("date", c("month", "day", "year"), "/") |>
+  mutate(
+    month = month.name[as.integer(month)],
+    year = if_else(as.integer(year) < 30, as.integer(year) + 2000, as.integer(year) + 1900 )
+  ) |> 
+  select(year, month, close)
+```
+
 

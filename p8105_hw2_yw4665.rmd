@@ -63,7 +63,11 @@ result_df = cleaned_pols_month_df |>
   left_join(cleaned_snp_df, by = c("year", "month")) |>
   left_join(cleaned_unemployment_df, by = c("year", "month"))
 ```
+Three datasets each contains information about an event over a period of time, specifically speaking:
 
+- pos-month: includes data on the number of governors from republican and democrat parties and the party of president from 1947-01 to 2015-06
+- snp: includes Standard & Poor’s stock market index from 1950-01 to 2015-07
+-
 
 
 

@@ -38,6 +38,7 @@ cleaned_snp_df = snp_df |>
   separate("date", c("month", "day", "year"), "/") |>
   mutate(
     month = month.name[as.integer(month)],
+    # Change the year formatting to match with pols_month_df
     year = if_else(as.integer(year) < 30, as.integer(year) + 2000, as.integer(year) + 1900 )
   ) |> 
   select(year, month, close)

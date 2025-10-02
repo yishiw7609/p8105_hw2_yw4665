@@ -170,11 +170,26 @@ summary(zori_with_zipinfo)
 length(unique(zori_with_zipinfo$region_name))
 length(unique(zori_with_zipinfo$neighborhood))
 ```
-We can see that after pivoting longer, there is a total of 320 unique zip codes and 43 neighborhoods in the combined dataset, and the total number of observation is 10848.
+We can see that after pivoting longer, there is a total of 320 unique zip codes and 43 neighborhoods in the combined dataset, and the total number of observation is 10848. Now to find the Zip Codes that appear in one dataset and not in the other:
+```{r}
+zips_zip_codes = zip_codes_clean$zip_code |>
+  unique() |>
+  sort()
 
+zips_zori = zori_clean$region_name |>
+  unique() |>
+  sort()
 
+zips_in_zori_only = setdiff(zips_zori, zips_zip_codes)
+zips_in_zori_only
+length(zips_in_zori_only)
+zips_in_zip_codes_only = setdiff(zips_zip_codes, zips_zori)
+zips_in_zip_codes_only
+length(zips_in_zip_codes_only)
+```
+We can see thtat 171 unique zip codes appear in zip_codes datasets but not in the Zori dataset. After looking a few zip codes up, I find that these are PO box / corporate mail ZIP, and these PO-box-only ZIPs have no housing rental observations, so Zori is not computed.
 
-
+Lastly, to find the impact of COVID-19 by constructing a table:
 
 
 

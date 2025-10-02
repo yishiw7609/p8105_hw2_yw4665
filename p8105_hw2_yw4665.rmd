@@ -165,8 +165,12 @@ zori_with_zipinfo = zori_clean |>
   full_join(zip_codes_clean, by = c("region_name" = "zip_code")) |>
   select(date, zori_value, everything())
 ```
-
-
+```{r}
+summary(zori_with_zipinfo)
+length(unique(zori_with_zipinfo$region_name))
+length(unique(zori_with_zipinfo$neighborhood))
+```
+We can see that after pivoting longer, there is a total of 320 unique zip codes and 43 neighborhoods in the combined dataset, and the total number of observation is 10848.
 
 
 

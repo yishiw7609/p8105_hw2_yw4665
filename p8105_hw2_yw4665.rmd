@@ -60,7 +60,7 @@ cleaned_unemployment_df = unemployment_df |>
 ```
 Now we combine all three dataframes through two left_joins:
 ```{r}
-result_df = cleaned_pols_month_df |>
+pols_snp_unempolyment_df = cleaned_pols_month_df |>
   left_join(cleaned_snp_df, by = c("year", "month")) |>
   left_join(cleaned_unemployment_df, by = c("year", "month"))
 ```
@@ -79,7 +79,8 @@ mtw_df = read_excel("local_files/202509 Trash Wheel Collection Data.xlsx", sheet
   janitor::clean_names() |>
   mutate(
     sports_balls = as.integer(round(sports_balls)),
-    category = "Mr. Trash Wheel"
+    category = "Mr. Trash Wheel",
+    year = as.numeric(year),
   )  |>
   filter(!is.na(dumpster))
 ```
@@ -99,6 +100,10 @@ gftw_df = read_excel("local_files/202509 Trash Wheel Collection Data.xlsx", shee
     category = "Gwynns Falls Trash Wheel"
   ) |>
   filter(!is.na(dumpster))
+```
+Now we combine all 3 datasets by stacking them together:
+```{r}
+all_trash_wheels_df = bind_rows(mtw_df, ptw_df, gftw_df)
 ```
 
 

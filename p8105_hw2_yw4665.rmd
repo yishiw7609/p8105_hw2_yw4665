@@ -127,9 +127,39 @@ First import two datasets:
 ```{r}
 zip_codes_df = read_csv("local_files/zillow_data/Zip Codes.csv") |>
   janitor::clean_names()
+
 zip_zori_df = read_csv("local_files/zillow_data/Zip_zori_uc_sfrcondomfr_sm_month_NYC.csv") |>
-  janitor::clean_names()
+  janitor::clean_names() 
 ```
+Perform tidying for zip_codes_df:
+```{r}
+zip_codes_clean = zip_codes_df |>
+  mutate(
+    county = str_to_title(county),
+    neighborhood = if_else(is.na(neighborhood), NA_character_, str_to_title(neighborhood))
+  ) |>
+  distinct() |>
+  select(zip_code, county, county_fips, county_code, state_fips, file_date, neighborhood, everything())
+```
+
+Perform tidying for zip_zori_df:
+```{r}
+zori_clean = zip_zori_df |>
+  pivot_longer(
+    cols = contains("x20"),
+    names_to = "date",
+    values_to = "zori_value",
+    values_transform = list(zori_value = as.numeric)
+  ) |>
+  mutate(
+    city = if_else(is.na(city) | city == "", NA_character_, str_to_title(city))
+  ) |>
+  filter(!is.na(zori_value)) |>
+  select(region_id, size_rank, region_name, region_type, state, city, county_name, date, zori_value, metro) 
+
+```
+
+
 
 
 

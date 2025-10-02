@@ -122,6 +122,15 @@ all_trash_wheels_df |>
 ```
 And Gwynnda collected 18120 cigarette butts during June 2022.
 
+## Problem 3
+First import two datasets:
+```{r}
+zip_codes_df = read_csv("local_files/zillow_data/Zip Codes.csv") |>
+  janitor::clean_names()
+zip_zori_df = read_csv("local_files/zillow_data/Zip_zori_uc_sfrcondomfr_sm_month_NYC.csv") |>
+  janitor::clean_names()
+```
+
 
 
 

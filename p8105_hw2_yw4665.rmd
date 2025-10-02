@@ -9,6 +9,7 @@ output: github_document
 Call necessary libraries here:
 ```{r}
 library(tidyverse)
+library(readxl)
 ```
 
 ## Problem 1
@@ -71,6 +72,15 @@ Three datasets each contains information about an event over a period of time, s
 
 By combining the datasets above with date (year-month), we are able to see the impact of politician parties on SnP stock market and unempolyment rate. These data over time may reflect the overall performance of a party or presidency.
 
+## Problem02
+First, import the Mr. Trash Wheel sheet and apply changes:
+```{r}
+mtw_df = read_excel("local_files/202509 Trash Wheel Collection Data.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N653") |>
+  janitor::clean_names() |>
+  mutate(
+    sports_balls = as.integer(round(sports_balls))
+  )
+```
 
 
 

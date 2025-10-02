@@ -156,8 +156,16 @@ zori_clean = zip_zori_df |>
   ) |>
   filter(!is.na(zori_value)) |>
   select(region_id, size_rank, region_name, region_type, state, city, county_name, date, zori_value, metro) 
-
 ```
+
+
+Merging two datasets with zip_codes:
+```{r}
+zori_with_zipinfo = zori_clean |>
+  full_join(zip_codes_clean, by = c("region_name" = "zip_code")) |>
+  select(date, zori_value, everything())
+```
+
 
 
 

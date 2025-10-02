@@ -106,6 +106,23 @@ Now we combine all 3 datasets by stacking them together:
 all_trash_wheels_df = bind_rows(mtw_df, ptw_df, gftw_df)
 ```
 
+Lastly, the combined Trash Wheels df contains `r nrow(all_trash_wheels_df)` observations across three wheels (Mr. Trash Wheel, Professor Trash Wheel, and Gwynnda). Key variables include `year`, `month` and `date` (collection date), `weight_tons` and `volume_cubic_yards` (mass and volume of collected trash). `plastic_bottles:sport_balls` (all types of recycled trash) `homes_powered` (estimated number of household to be powered) and `category` (which Trash Wheel contributed). 
+```{r}
+all_trash_wheels_df |>
+  filter(category == "Professor Trash Wheel") |>
+  summarise(total = sum(weight_tons, na.rm = TRUE)) |>
+  pull(total)
+```
+We see that Professor Trash Wheel collected a total of 282.26 tons of trash.
+```{r}
+all_trash_wheels_df |> 
+  filter(category == "Gwynns Falls Trash Wheel", year == 2022, month == "June") |> 
+  summarise(total = sum(cigarette_butts, na.rm = TRUE)) |> 
+  pull(total)
+```
+And Gwynnda collected 18120 cigarette butts during June 2022.
+
+
 
 
 

@@ -75,12 +75,32 @@ By combining the datasets above with date (year-month), we are able to see the i
 ## Problem02
 First, import the Mr. Trash Wheel sheet and apply changes:
 ```{r}
-mtw_df = read_excel("local_files/202509 Trash Wheel Collection Data.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N653") |>
+mtw_df = read_excel("local_files/202509 Trash Wheel Collection Data.xlsx", sheet = "Mr. Trash Wheel", range = "A2:N709") |>
   janitor::clean_names() |>
   mutate(
-    sports_balls = as.integer(round(sports_balls))
-  )
+    sports_balls = as.integer(round(sports_balls)),
+    category = "Mr. Trash Wheel"
+  )  |>
+  filter(!is.na(dumpster))
 ```
+
+Similarly, for Professor Trash Wheel and Gwynnda datasets:
+```{r}
+ptw_df = read_excel("local_files/202509 Trash Wheel Collection Data.xlsx", sheet = "Professor Trash Wheel", range = "A2:M134") |>
+  janitor::clean_names() |>
+  mutate(
+    category = "Professor Trash Wheel"
+  ) |>
+  filter(!is.na(dumpster))
+
+gftw_df = read_excel("local_files/202509 Trash Wheel Collection Data.xlsx", sheet = "Gwynns Falls Trash Wheel", range = "A2:L351") |>
+  janitor::clean_names() |>
+  mutate(
+    category = "Gwynns Falls Trash Wheel"
+  ) |>
+  filter(!is.na(dumpster))
+```
+
 
 
 

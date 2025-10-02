@@ -163,6 +163,7 @@ Merging two datasets with zip_codes:
 ```{r}
 zori_with_zipinfo = zori_clean |>
   full_join(zip_codes_clean, by = c("region_name" = "zip_code")) |>
+  mutate(date = as.Date(sub("^x", "", date), format = "%Y_%m_%d")) |>
   select(date, zori_value, everything())
 ```
 ```{r}
@@ -181,15 +182,36 @@ zips_zori = zori_clean$region_name |>
   sort()
 
 zips_in_zori_only = setdiff(zips_zori, zips_zip_codes)
-zips_in_zori_only
+head(zips_in_zori_only, 10)
 length(zips_in_zori_only)
 zips_in_zip_codes_only = setdiff(zips_zip_codes, zips_zori)
-zips_in_zip_codes_only
+head(zips_in_zip_codes_only, 10)
 length(zips_in_zip_codes_only)
 ```
 We can see thtat 171 unique zip codes appear in zip_codes datasets but not in the Zori dataset. After looking a few zip codes up, I find that these are PO box / corporate mail ZIP, and these PO-box-only ZIPs have no housing rental observations, so Zori is not computed.
 
 Lastly, to find the impact of COVID-19 by constructing a table:
+
+```{r}
+jan_2020_vs_jan_2021_table = zori_with_zipinfo |>
+  filter(date %in% as.Date(c("2020-01-31", "2021-01-31"))) |>
+  select(date, zori_value, region_name, county, neighborhood) |>
+  pivot_wider(
+    names_from = "date",
+    values_from = "zori_value"
+    ) |>
+  drop_na() |>
+  mutate(
+    price_drop = `2020-01-31` - `2021-01-31`
+  ) |>
+  arrange(desc(price_drop)) |>
+  head(10) |>
+  knitr::kable()
+jan_2020_vs_jan_2021_table
+```
+
+From the table above, we can see that Manhattan areas suffered from major demand shocks (remote work, fewer tourists, temporary out-migration, etc), so large rent declines in central neighborhoods are observed.
+
 
 
 
